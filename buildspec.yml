@@ -26,7 +26,10 @@ phases:
       - apt-get update -o Acquire::AllowInsecureRepositories=true || apt-get update --allow-insecure-repositories || apt-get update --allow-unauthenticated
       - apt-get -y install jq
       - pip install --upgrade awscli pytest
-
+  pre_build:
+    commands:
+      - pip3 install -r requirements.txt 
+      - python -m pytest test_main.py
   build:
     commands:
       - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
